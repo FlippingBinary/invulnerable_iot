@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-class AdvicePage extends StatelessWidget {
-  const AdvicePage({super.key});
+class LearningPage extends StatelessWidget {
+  const LearningPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("Advice Page"),
+      child: Text("Learning Page"),
     );
   }
 }
-

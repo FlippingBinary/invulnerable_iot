@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 class AppText extends StatelessWidget {
   final double size;
   final String text;
-  final Color color;
+  final Color? color;
   AppText({
     Key? key,
     this.size = 16,
     required this.text,
-    this.color = Colors.black54,
+    this.color,
   }) : super(key: key);
 
   @override

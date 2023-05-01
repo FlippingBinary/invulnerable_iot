@@ -18,5 +18,5 @@ class DataModel {
         type: service.type ?? 'unknown',
         host: service.host ?? 'unknown',
         port: service.port != null ? '${service.port}' : 'unknown',
-  );
+      );
 }

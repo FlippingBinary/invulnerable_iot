@@ -1,14 +1,14 @@
 import 'package:invulnerable_iot/model/data_model.dart';
 import 'package:nsd/nsd.dart';
 
+const serviceNameDiscovery = '_services._dns-sd._udp';
+const serviceNameHTTP = '_http._tcp';
+
 // Create a DataServices class that scans the network for services
 class DataServices {
-  // Create a list of services
-  final serviceNameHTTP = '_http._tcp';
-  final serviceNameDiscovery = '_services._dns-sd._udp';
-
   // Create a function that scans the network for services
-  Future<List<DataModel>> getServices({ String serviceName = '_services._dns-sd._udp' }) async {
+  Future<List<DataModel>> getServices(
+      {String serviceName = serviceNameDiscovery}) async {
     final discovery = await startDiscovery(serviceNameHTTP);
     final services = <DataModel>[];
 

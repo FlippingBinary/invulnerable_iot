@@ -22,23 +22,20 @@ class _AppCubitLogicsState extends State<AppCubitLogics> {
             return WelcomePage();
           } else if (state is LoadingState) {
             return Center(child: CircularProgressIndicator());
-          } else if (state is LoadedState) {
+          } else if (state is HomeState) {
             return HomePage();
           } else if (state is DetailState) {
             var service = state.service;
-            return Container(
-              color: Colors.white,
-              child: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    context.read<AppCubits>().goHome();
-                  },
-                  child: Text(
-                    "${service.name} is a ${service.type} service running on ${service.host}:${service.port}",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
+            return Center(
+              child: GestureDetector(
+                onTap: () {
+                  context.read<AppCubits>().goHome();
+                },
+                child: Text(
+                  "${service.name} is a ${service.type} service running on ${service.host}:${service.port}",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),

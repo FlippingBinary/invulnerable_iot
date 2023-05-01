@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invulnerable_iot/cubit/app_cubit_logics.dart';
 import 'package:invulnerable_iot/cubit/app_cubits.dart';
 import 'package:invulnerable_iot/services/data_services.dart';
+import 'package:invulnerable_iot/theme/color_scheme.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,18 +28,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       scrollBehavior: MyCustomScrollBehavior(),
-      title: 'Flutter Demo',
+      title: 'Friendly Spy Detector',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
+      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
       home: BlocProvider<AppCubits>(
-        create: (context) => AppCubits(
-          data: DataServices(),
-        ),
+        create: (context) => AppCubits(),
         child: AppCubitLogics(),
       ),
     );
   }
 }
-

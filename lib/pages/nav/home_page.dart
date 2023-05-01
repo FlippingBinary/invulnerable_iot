@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return Scaffold(
       body: BlocBuilder<AppCubits, CubitStates>(
         builder: (context, state) {
-          var services = (state as LoadedState).services;
+          var services = (state as HomeState).services;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -27,7 +27,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
                 child: Row(
                   children: [
-                    Icon(Icons.menu, size: 30, color: Colors.black),
+                    // Set the icon's color to the primary color of the theme
+                    Icon(Icons.menu, size: 30),
                     Expanded(child: Container()),
                     Container(
                       margin: const EdgeInsets.only(right: 20),
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               SizedBox(height: 40),
               Container(
                 margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
-                child: AppLargeText(text: "Discover"),
+                child: AppLargeText(text: "Friendly Spy Detector"),
               ),
               SizedBox(height: 40),
               SizedBox(
@@ -53,10 +54,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   child: TabBar(
                     labelPadding: const EdgeInsets.only(left: 20, right: 20),
                     controller: tabController,
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Colors.grey.withOpacity(0.6),
                     isScrollable: true,
-                    // indicatorSize: TabBarIndicatorSize.label,
                     indicator: CircleTabIndicator(
                         color: theme.primaryColor, radius: 3),
                     tabs: [

@@ -13,13 +13,12 @@ class AppLargeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
     return Text(
       text,
       style: TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: size,
-        color: color ?? theme.primaryColor,
+        color: color ?? Theme.of(context).colorScheme.primary,
       ),
     );
   }

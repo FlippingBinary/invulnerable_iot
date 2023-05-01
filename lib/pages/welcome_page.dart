@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invulnerable_iot/cubit/app_cubits.dart';
-import 'package:invulnerable_iot/services/data_services.dart';
 import 'package:invulnerable_iot/widgets/app_large_text.dart';
 import 'package:invulnerable_iot/widgets/app_text.dart';
 import 'package:invulnerable_iot/widgets/responsive_button.dart';
@@ -129,8 +128,9 @@ class _WelcomePageState extends State<WelcomePage> {
                                     SizedBox(height: 20),
                                     ElevatedButton(
                                         onPressed: () async {
-                                          BlocProvider.of<AppCubits>(context)
-                                              .getData();
+                                          context
+                                              .read<AppCubits>()
+                                              .goHomeAndStartDeviceScan();
                                         },
                                         child: Text("Press me")),
                                     ResponsiveButton(width: 100),

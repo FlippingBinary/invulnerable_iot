@@ -19,8 +19,8 @@ class LoadingState extends CubitStates {
   List<Object> get props => [];
 }
 
-class LoadedState extends CubitStates {
-  LoadedState(this.services);
+class HomeState extends CubitStates {
+  HomeState(this.services);
   final List<DataModel> services;
   @override
   List<Object> get props => [services];

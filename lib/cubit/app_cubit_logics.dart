@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invulnerable_iot/cubit/app_cubit_states.dart';
 import 'package:invulnerable_iot/cubit/app_cubits.dart';
 import 'package:invulnerable_iot/pages/nav/home_page.dart';
+import 'package:invulnerable_iot/pages/nav/main_page.dart';
 import 'package:invulnerable_iot/pages/welcome_page.dart';
 
 class AppCubitLogics extends StatefulWidget {
@@ -23,7 +24,7 @@ class _AppCubitLogicsState extends State<AppCubitLogics> {
           } else if (state is LoadingState) {
             return Center(child: CircularProgressIndicator());
           } else if (state is HomeState) {
-            return HomePage();
+            return MainPage();
           } else if (state is DetailState) {
             var service = state.service;
             return Center(

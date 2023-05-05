@@ -35,14 +35,14 @@ class _MainPageState extends State<MainPage> {
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
+        backgroundColor: theme.colorScheme.background,
         currentIndex: currentIndex,
         onTap: onTap,
-        selectedItemColor: theme.primaryColor,
+        selectedItemColor: theme.colorScheme.primary,
         unselectedItemColor: Colors.grey.withOpacity(0.6),
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        elevation: 0,
+        // elevation: 0,
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),

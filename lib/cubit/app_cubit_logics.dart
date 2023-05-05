@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invulnerable_iot/cubit/app_cubit_states.dart';
 import 'package:invulnerable_iot/cubit/app_cubits.dart';
-import 'package:invulnerable_iot/pages/nav/home_page.dart';
 import 'package:invulnerable_iot/pages/nav/main_page.dart';
 import 'package:invulnerable_iot/pages/welcome_page.dart';
 
@@ -21,19 +20,17 @@ class _AppCubitLogicsState extends State<AppCubitLogics> {
         builder: (context, state) {
           if (state is WelcomeState) {
             return WelcomePage();
-          } else if (state is LoadingState) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is HomeState) {
+          } else if (state is PrimaryState) {
             return MainPage();
           } else if (state is DetailState) {
-            var service = state.service;
+            var device = state.device;
             return Center(
               child: GestureDetector(
                 onTap: () {
                   context.read<AppCubits>().goHome();
                 },
                 child: Text(
-                  "${service.name} is a ${service.type} service running on ${service.host}:${service.port}",
+                  "${device.name} is a service running on ${device.identifiers.reduce((value, element) => '$value, $element')}.",
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,

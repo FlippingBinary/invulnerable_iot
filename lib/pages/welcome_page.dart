@@ -59,7 +59,7 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       body: Stack(
         children: [
           PageView.builder(
@@ -83,8 +83,12 @@ class _WelcomePageState extends State<WelcomePage> {
                             color: Colors.transparent,
                             child: FittedBox(
                               fit: BoxFit.cover,
-                              child: Image.asset(
-                                "assets/images/${images[index]}",
+                              child: Opacity(
+                                opacity: 0.7,
+                                child: Image.asset(
+                                  // make the image partially opaque
+                                  "assets/images/${images[index]}",
+                                ),
                               ),
                             ),
                           ),
@@ -94,7 +98,8 @@ class _WelcomePageState extends State<WelcomePage> {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.8),
+                                color: theme.colorScheme.background
+                                    .withOpacity(0.8),
                                 borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(20),
                                   bottomRight: Radius.circular(20),
@@ -113,8 +118,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                     ),
                                     AppLargeText(
                                       text: subtitles[index],
-                                      color:
-                                          theme.primaryColor.withOpacity(0.5),
+                                      color: theme.colorScheme.tertiary,
                                     ),
                                     SizedBox(height: 20),
                                     SizedBox(
@@ -122,18 +126,23 @@ class _WelcomePageState extends State<WelcomePage> {
                                           0.8,
                                       child: AppText(
                                         text: descriptions[index],
-                                        color: theme.hintColor,
+                                        color: theme.colorScheme.secondary,
                                       ),
                                     ),
                                     SizedBox(height: 20),
                                     ElevatedButton(
-                                        onPressed: () async {
-                                          context
-                                              .read<AppCubits>()
-                                              .goHomeAndStartDeviceScan();
-                                        },
-                                        child: Text("Press me")),
-                                    ResponsiveButton(width: 100),
+                                      onPressed: () {
+                                        context
+                                            .read<AppCubits>()
+                                            .goHomeAndStartDeviceScan();
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text("Get Secure"),
+                                          Icon(Icons.arrow_forward),
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
@@ -159,8 +168,8 @@ class _WelcomePageState extends State<WelcomePage> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: _currentIndex == indexDots
-                        ? theme.primaryColor
-                        : theme.primaryColor.withOpacity(0.5),
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.primary.withOpacity(0.5),
                   ),
                 );
               }),

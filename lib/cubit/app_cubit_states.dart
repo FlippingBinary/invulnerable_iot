@@ -4,32 +4,22 @@ import 'package:invulnerable_iot/model/data_model.dart';
 abstract class CubitStates extends Equatable {
 }
 
-class InitialState extends CubitStates {
-  @override
-  List<Object> get props => [];
-}
-
 class WelcomeState extends CubitStates {
   @override
   List<Object> get props => [];
 }
 
-class LoadingState extends CubitStates {
+class PrimaryState extends CubitStates {
+  PrimaryState(this.devices);
+  final List<DataModel> devices;
   @override
-  List<Object> get props => [];
-}
-
-class HomeState extends CubitStates {
-  HomeState(this.services);
-  final List<DataModel> services;
-  @override
-  List<Object> get props => [services];
+  List<Object> get props => [devices];
 }
 
 class DetailState extends CubitStates {
-  DetailState(this.service);
-  final DataModel service;
+  DetailState(this.device);
+  final DataModel device;
   @override
-  List<Object> get props => [service];
+  List<Object> get props => [device];
 }
 

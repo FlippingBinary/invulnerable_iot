@@ -42,8 +42,9 @@ dependencies:
   nsd: ^2.3.1
   http: ^0.13.5
   flutter_speed_dial: ^6.2.0
-  multicast_dns: ^0.3.2+3
   material_color_utilities: ^0.2.0
+  ping_discover_network: ^0.2.0+1
+  network_info_plus: ^3.0.5
 
 dev_dependencies:
   flutter_test:

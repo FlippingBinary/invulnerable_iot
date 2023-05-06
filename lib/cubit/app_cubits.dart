@@ -60,8 +60,14 @@ class AppCubits extends Cubit<CubitStates> {
     }
   }
 
-  devicePage(DataModel device) {
-    emit(DeviceState(device));
+  devicePage({DataModel? device, ServiceModel? service}) {
+    if (device != null) {
+      emit(DeviceState(device));
+    } else if (service != null) {
+      final device = devices.firstWhere(
+          (device) => device.services.any((s) => s.uuid == service.uuid));
+      emit(DeviceState(device));
+    }
   }
 
   servicePage(ServiceModel service) {
@@ -89,7 +95,8 @@ class AppCubits extends Cubit<CubitStates> {
 
   updateService(ServiceModel service) {
     // Find the device in the devices list that has the same uuid as the provided device and replace it with the provided device.
-    final device = devices.firstWhere((device) => device.services.any((s) => s.uuid == service.uuid));
+    final device = devices.firstWhere(
+        (device) => device.services.any((s) => s.uuid == service.uuid));
     final index = device.services.indexWhere((s) => s.uuid == service.uuid);
     if (index != -1) {
       device.services[index] = service;

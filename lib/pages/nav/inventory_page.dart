@@ -66,7 +66,7 @@ class _InventoryPageState extends State<InventoryPage> {
                                 // We can't emit from here, but we can call the Cubit's method
                                 context
                                     .read<AppCubits>()
-                                    .devicePage(devices[i]);
+                                    .devicePage(device: devices[i]);
                               },
                             );
                           },

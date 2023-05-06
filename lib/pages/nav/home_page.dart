@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage>
                             title: Text(devices[index].name),
                             onTap: () {
                               BlocProvider.of<AppCubits>(context)
-                                  .devicePage(devices[index]);
+                                  .devicePage(device: devices[index]);
                             },
                           );
                         },

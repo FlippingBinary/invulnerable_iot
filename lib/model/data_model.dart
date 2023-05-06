@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 import 'package:nsd/nsd.dart';
 
 class ServiceModel {
+  String name;
   String? type;
   String? host;
   String ip;
@@ -12,6 +13,7 @@ class ServiceModel {
   String _uuid;
 
   ServiceModel({
+    required this.name,
     this.type,
     this.host,
     required this.ip,
@@ -22,6 +24,7 @@ class ServiceModel {
   }) : _uuid = uuid ?? Uuid().v4();
 
   ServiceModel copyWith({
+    String? name,
     String? type,
     String? host,
     String? ip,
@@ -31,6 +34,7 @@ class ServiceModel {
     String? uuid,
   }) {
     return ServiceModel(
+      name: name ?? this.name,
       type: type ?? this.type,
       host: host ?? this.host,
       ip: ip ?? this.ip,
@@ -57,7 +61,7 @@ class ServiceModel {
 
   @override
   String toString() {
-    return 'ServiceModel{type: $type, host: $host, ip: $ip, port: $port, header: $header, isKnown: $isKnown}';
+    return 'ServiceModel{name: $name, type: $type, host: $host, ip: $ip, port: $port, header: $header, isKnown: $isKnown, uuid: $uuid}';
   }
 }
 
@@ -88,6 +92,7 @@ class DataModel {
       }
       seen.add(addr.address);
       ServiceModel serviceModel = ServiceModel(
+        name: service.type ?? addr.address + ':' + service.port.toString(),
         type: service.type,
         host: service.host,
         ip: addr.address,

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:network_info_plus/network_info_plus.dart';
 import 'package:invulnerable_iot/model/data_model.dart';
 import 'package:nsd/nsd.dart';
 
@@ -23,6 +22,7 @@ class SniffedService {
   }
 }
 
+// TODO: Use this to detect services that don't announce themselves
 Future<SniffedService?> _checkService(String ip, int port) async {
   try {
     final socket =
@@ -106,6 +106,15 @@ class DataServices {
       discovery.addServiceListener(_createDiscoveryListener(this, callback));
       _discoveries[serviceNameDiscovery] = discovery;
       print("Now there are ${_discoveries.length} discoveries");
+    } on NsdError catch (e, s) {
+      if (e.cause == ErrorCause.maxLimit) {
+        print("Maximum outstanding requests reached");
+        // TODO: Handle this gracefully
+      } else {
+        print("discoverServices error:");
+        print(e);
+        print(s);
+      }
     } catch (e, s) {
       print("discoverServices error:");
       print(e);

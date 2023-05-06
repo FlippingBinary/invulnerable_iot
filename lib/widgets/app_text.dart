@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 
 // Make this class mutable
 class AppText extends StatelessWidget {
-  final double size;
   final String text;
+  final double size;
+  final FontWeight weight;
   final Color? color;
   AppText({
     Key? key,
-    this.size = 16,
     required this.text,
+    this.size = 16,
+    this.weight = FontWeight.normal,
     this.color,
   }) : super(key: key);
 
@@ -19,6 +21,7 @@ class AppText extends StatelessWidget {
       style: TextStyle(
         fontSize: size,
         color: color,
+        fontWeight: weight,
       ),
     );
   }

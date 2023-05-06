@@ -54,18 +54,16 @@ class _AlertPageState extends State<AlertPage> {
                           itemBuilder: (_, i) {
                             return ListTile(
                               leading: Icon(Icons.star),
-                              title: Text(
-                                devices[i].name,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              title: AppText(
+                                text: devices[i].name,
+                                size: 20,
+                                weight: FontWeight.bold,
                               ),
                               onTap: () {
                                 // We can't emit from here, but we can call the Cubit's method
                                 context
                                     .read<AppCubits>()
-                                    .devicePage(devices[i]);
+                                    .devicePage(device: devices[i]);
                               },
                             );
                           },

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:invulnerable_iot/pages/nav/advice_page.dart';
-import 'package:invulnerable_iot/pages/nav/devices_page.dart';
+import 'package:invulnerable_iot/pages/nav/alerts_page.dart';
+import 'package:invulnerable_iot/pages/nav/inventory_page.dart';
 import 'package:invulnerable_iot/pages/nav/home_page.dart';
 import 'package:invulnerable_iot/pages/nav/learning_page.dart';
 import 'package:invulnerable_iot/pages/nav/settings_page.dart';
@@ -16,8 +16,8 @@ class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
   List pages = [
     HomePage(),
-    AdvicePage(),
-    DevicesPage(),
+    AlertPage(),
+    InventoryPage(),
     LearningPage(),
     SettingsPage(),
   ];

@@ -5,19 +5,20 @@ import 'package:invulnerable_iot/cubit/app_cubits.dart';
 import 'package:invulnerable_iot/widgets/app_large_text.dart';
 import 'package:invulnerable_iot/widgets/app_text.dart';
 
-class LearningPage extends StatefulWidget {
-  const LearningPage({super.key});
+class ServicePage extends StatefulWidget {
+  const ServicePage({super.key});
 
   @override
-  State<LearningPage> createState() => _LearningPageState();
+  State<ServicePage> createState() => _ServicePageState();
 }
 
-class _LearningPageState extends State<LearningPage> {
+class _ServicePageState extends State<ServicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<AppCubits, CubitStates>(
         builder: (context, state) {
+          final service = (state as ServiceState).service;
           return Column(
             children: [
               Container(
@@ -26,11 +27,9 @@ class _LearningPageState extends State<LearningPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 40),
-                    AppLargeText(text: "Learning Resources"),
+                    AppLargeText(text: "Service Details"),
                     SizedBox(height: 20),
-                    AppText(
-                      text: "Keep your network secure with this advice.",
-                    ),
+                    AppText(text: "Host: ${service.host}"),
                   ],
                 ),
               ),

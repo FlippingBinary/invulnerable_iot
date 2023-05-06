@@ -16,10 +16,17 @@ class PrimaryState extends CubitStates {
   List<Object> get props => [devices];
 }
 
-class DetailState extends CubitStates {
-  DetailState(this.device);
+class DeviceState extends CubitStates {
+  DeviceState(this.device);
   final DataModel device;
   @override
   List<Object> get props => [device];
+}
+
+class ServiceState extends CubitStates {
+  ServiceState(this.service);
+  final ServiceModel service;
+  @override
+  List<Object> get props => [service];
 }
 

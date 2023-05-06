@@ -5,20 +5,23 @@ import 'package:invulnerable_iot/cubit/app_cubits.dart';
 import 'package:invulnerable_iot/widgets/app_large_text.dart';
 import 'package:invulnerable_iot/widgets/app_text.dart';
 
-class AdvicePage extends StatefulWidget {
-  const AdvicePage({super.key});
+class InventoryPage extends StatefulWidget {
+  const InventoryPage({super.key});
 
   @override
-  State<AdvicePage> createState() => _AdvicePageState();
+  State<InventoryPage> createState() => _InventoryPageState();
 }
 
-class _AdvicePageState extends State<AdvicePage> {
+class _InventoryPageState extends State<InventoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<AppCubits, CubitStates>(
         builder: (context, state) {
-          var services = (state as PrimaryState).devices;
+          final primaryState = (state as PrimaryState);
+          var devices = primaryState.devices
+              .where((device) => device.isAdopted == true)
+              .toList();
           return Column(
             children: [
               Container(
@@ -27,13 +30,11 @@ class _AdvicePageState extends State<AdvicePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 40),
-                    AppLargeText(text: "Advice and Alerts"),
+                    AppLargeText(text: "Inventory"),
                     AppText(
-                      text: "These devices were found on your network. "
-                          "Please review the list. It's important to identify "
-                          "all devices on your network to keep it secure. "
-                          "When you identify a device, it will be moved to "
-                          "your inventory.",
+                      text: "These are devices you've identified on your "
+                          "network. If they are red, it has a new service "
+                          "you should check on.",
                     ),
                     SizedBox(height: 20),
                   ],
@@ -42,26 +43,30 @@ class _AdvicePageState extends State<AdvicePage> {
               Flexible(
                 child: Container(
                   margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
-                  child: services.isEmpty
+                  child: state.devices.isEmpty
                       ? Center(child: CircularProgressIndicator())
                       : ListView.builder(
-                          itemCount: services.length,
+                          itemCount: devices.length,
                           itemBuilder: (_, i) {
+                            ThemeData theme = Theme.of(context);
                             return ListTile(
                               leading: Icon(Icons.star),
                               title: Text(
-                                services[i].name,
+                                devices[i].name,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: devices[i].services.any(
+                                          (service) => service.isKnown == false)
+                                      ? Colors.red
+                                      : theme.colorScheme.primary,
                                 ),
                               ),
                               onTap: () {
                                 // We can't emit from here, but we can call the Cubit's method
                                 context
                                     .read<AppCubits>()
-                                    .detailPage(services[i]);
+                                    .devicePage(devices[i]);
                               },
                             );
                           },

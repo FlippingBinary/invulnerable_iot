@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invulnerable_iot/cubit/app_cubit_states.dart';
 import 'package:invulnerable_iot/cubit/app_cubits.dart';
 import 'package:invulnerable_iot/widgets/app_large_text.dart';
+import 'package:invulnerable_iot/widgets/app_text.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,33 +12,71 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    // Access context and Cubit here
+    final cubit = context.read<AppCubits>();
+
+    if (state == AppLifecycleState.resumed) {
+      await cubit.resume();
+    } else {
+      await cubit.pause();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<AppCubits, CubitStates>(
+        buildWhen: (previous, current) =>
+            (previous as PrimaryState).devices.length !=
+            (current as PrimaryState).devices.length,
         builder: (context, state) {
-          final services = (state as PrimaryState).devices;
+          final devices = (state as PrimaryState)
+              .devices
+              .where((device) => device.isAdopted == false)
+              .toList();
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 40),
               Container(
                 margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
-                child: AppLargeText(text: "Friendly Spy Detector"),
+                child: AppLargeText(text: "Invulnerable IOT"),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
+              Container(
+                margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
+                child: AppText(
+                    text: "Keep track of devices on your network, get alerts "
+                        "when new devices join, and when they have firmware "
+                        "updates to keep your network more secure."),
+              ),
               Expanded(
-                child: services.isEmpty
+                child: state.devices.isEmpty
                     ? Center(child: CircularProgressIndicator())
                     : ListView.builder(
-                        itemCount: services.length,
+                        itemCount: devices.length,
                         itemBuilder: (BuildContext context, int index) {
                           return ListTile(
-                            title: Text(services[index].name),
+                            title: Text(devices[index].name),
                             onTap: () {
                               BlocProvider.of<AppCubits>(context)
-                                  .detailPage(services[index]);
+                                  .devicePage(devices[index]);
                             },
                           );
                         },

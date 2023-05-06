@@ -46,6 +46,7 @@ Future<SniffedService?> _checkService(String ip, int port) async {
 // The first argument is called service and the second is called status
 // That function will be async and return void
 typedef ServiceListener = void Function(Service service, ServiceStatus status);
+
 ServiceListener _createDiscoveryListener(
     DataServices dataServices, Function callback) {
   return (service, status) async {
@@ -59,13 +60,10 @@ ServiceListener _createDiscoveryListener(
           final serviceIdentifier = '$serviceName.$serviceType';
           print("Found a service type: $serviceIdentifier");
           dataServices.identifyService(serviceIdentifier, callback);
-          // final serviceDiscovery = await startDiscovery(serviceIdentifier);
-          // serviceDiscovery.addServiceListener(_createServiceListener(callback));
-          // discoveries[serviceIdentifier] = serviceDiscovery;
-          // callback(serviceData);
         }
       }
     } catch (e, s) {
+      print("_createDiscoveryListener error:");
       print(e);
       print(s);
     }
@@ -81,6 +79,7 @@ ServiceListener _createServiceListener(Function callback) {
         callback(serviceData);
       }
     } catch (e, s) {
+      print("_createServiceListener error:");
       print(e);
       print(s);
     }
@@ -96,59 +95,71 @@ class DataServices {
 
   // Create a function that scans the network for services
   discoverServices(Function callback) async {
-    final discovery =
-        await startDiscovery(serviceNameDiscovery, autoResolve: false);
+    try {
+      if (_discoveries.containsKey(serviceNameDiscovery)) {
+        print("Already scanning the network for services");
+        return;
+      }
+      final discovery =
+          await startDiscovery(serviceNameDiscovery, autoResolve: false);
 
-    discovery.addServiceListener(_createDiscoveryListener(this, callback));
-
-    // print("Deep scan of the network has been requested");
-    // final subnet = await _getSubnet();
-    // print("Subnet is $subnet");
-
-    // // iterate each possible port number
-    // for (var host = 1; host < 255; host++) {
-    //   print("Scanning '$subnet.$host' for services");
-
-    //   // iterate each IP address in the subnet
-    //   final List<Future<DataModel?>> scanners = [];
-    //   for (var port = 1; port <= 1024; port++) {
-    //     // TODO: This assumes the subnet is class C. It should be more flexible.
-    //     final String ip = '$subnet.$host';
-    //     scanners.add(_checkService(ip, port));
-    //     await Future.delayed(Duration(milliseconds: 1));
-    //   }
-    //   print("Waiting for results");
-    //   await Future.forEach(scanners, (scanner) async {
-    //     var result = await scanner;
-    //     if (result != null) {
-    //       callback(result);
-    //     }
-    //   });
-    //   print("Done waiting for results");
-    // }
-
-    print("No results should follow.");
-    // return DataServices._fromConnection(discoveries);
-    // return DataServices._fromConnection(discoveries);
-
-    // final wrapper = DataServices._fromConnection(discovery);
-    // _finalizer.attach(wrapper, wrapper);
-
-    // return wrapper;
+      discovery.addServiceListener(_createDiscoveryListener(this, callback));
+      _discoveries[serviceNameDiscovery] = discovery;
+      print("Now there are ${_discoveries.length} discoveries");
+    } catch (e, s) {
+      print("discoverServices error:");
+      print(e);
+      print(s);
+    }
   }
 
   // Create a function that identifies a specific service
   void identifyService(String serviceIdentifier, Function callback) async {
-    print("Identifying service $serviceIdentifier");
-    final serviceDiscovery =
-        await startDiscovery(serviceIdentifier, ipLookupType: IpLookupType.v4);
-    serviceDiscovery.addServiceListener(_createServiceListener(callback));
-    _discoveries[serviceIdentifier] = serviceDiscovery;
+    try {
+      if (_discoveries.containsKey(serviceIdentifier)) {
+        print("Already scanning for service $serviceIdentifier");
+        return;
+      }
+      print("Identifying service $serviceIdentifier");
+      final serviceDiscovery = await startDiscovery(serviceIdentifier,
+          ipLookupType: IpLookupType.v4);
+      serviceDiscovery.addServiceListener(_createServiceListener(callback));
+      _discoveries[serviceIdentifier] = serviceDiscovery;
+      print("Now there are ${_discoveries.length} discoveries");
+    } catch (e, s) {
+      print("identifyService error:");
+      print(e);
+      print(s);
+    }
   }
 
-  void stopScanning() {
-    for (var discovery in _discoveries.values) {
-      stopDiscovery(discovery);
+  void pauseScanning() async {
+    // Iterate the key and value pairs of the discoveries map
+    for (var key in _discoveries.keys) {
+      try {
+        if (_discoveries[key] == null) {
+          print("No discovery for $key when trying to pause it!");
+          continue;
+        }
+        await stopDiscovery(_discoveries[key]!);
+      } catch (e, s) {
+        print("stopScanning error when attempting to stop `$key`:");
+        print(e);
+        print(s);
+      }
+    }
+  }
+
+  void resumeScanning() async {
+    for (var key in _discoveries.keys) {
+      try {
+        final discovery = await startDiscovery(key);
+        _discoveries[key] = discovery;
+      } catch (e, s) {
+        print("resumeScanning error:");
+        print(e);
+        print(s);
+      }
     }
   }
 }

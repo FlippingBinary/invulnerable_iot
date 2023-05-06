@@ -73,7 +73,7 @@ ServiceListener _createDiscoveryListener(
 ServiceListener _createServiceListener(Function callback) {
   return (service, status) async {
     try {
-      print("Found a service: ${service.toString()}");
+      print("Received service from NSD: ${service.toString()}");
       if (status == ServiceStatus.found && service.addresses != null) {
         final serviceData = DataModel.fromService(service);
         callback(serviceData);

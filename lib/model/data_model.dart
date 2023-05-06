@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:uuid/uuid.dart';
 
 import 'package:nsd/nsd.dart';
 
@@ -9,6 +9,7 @@ class ServiceModel {
   String port;
   String? header;
   bool isKnown;
+  String _uuid;
 
   ServiceModel({
     this.type,
@@ -17,7 +18,32 @@ class ServiceModel {
     required this.port,
     this.header,
     this.isKnown = false,
-  });
+    String? uuid,
+  }) : _uuid = uuid ?? Uuid().v4();
+
+  ServiceModel copyWith({
+    String? type,
+    String? host,
+    String? ip,
+    String? port,
+    String? header,
+    bool? isKnown,
+    String? uuid,
+  }) {
+    return ServiceModel(
+      type: type ?? this.type,
+      host: host ?? this.host,
+      ip: ip ?? this.ip,
+      port: port ?? this.port,
+      header: header ?? this.header,
+      isKnown: isKnown ?? this.isKnown,
+      uuid: uuid ?? _uuid,
+    );
+  }
+
+  String get uuid {
+    return _uuid;
+  }
 
   // define identifier getter
   String get identifier => '$ip:$port';
@@ -39,12 +65,14 @@ class DataModel {
   String name;
   bool isAdopted;
   List<ServiceModel> services;
+  String _uuid;
 
   DataModel({
     required this.name,
     this.isAdopted = false,
     this.services = const [],
-  });
+    String? uuid,
+  }) : _uuid = uuid ?? Uuid().v4();
 
   factory DataModel.fromService(Service service) {
     var ipAddress = 'unknown';
@@ -79,6 +107,25 @@ class DataModel {
       name: service.name ?? service.host ?? ipAddress,
       services: services,
     );
+  }
+
+  DataModel copyWith({
+    String? name,
+    bool? isAdopted,
+    List<ServiceModel>? services,
+    String? uuid,
+  }) {
+    print("copyWith($name, $isAdopted, $services, $uuid)");
+    return DataModel(
+      name: name ?? this.name,
+      isAdopted: isAdopted ?? this.isAdopted,
+      services: services ?? this.services,
+      uuid: uuid ?? _uuid,
+    );
+  }
+
+  String get uuid {
+    return _uuid;
   }
 
   List<String> get identifiers {

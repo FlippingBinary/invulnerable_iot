@@ -18,7 +18,7 @@ class AppCubits extends Cubit<CubitStates> {
 
       print("Starting discovery");
       await dataServices.discoverServices((DataModel dataModel) {
-        print('Found a service: ${dataModel.toString()}');
+        print('Found a device: $dataModel');
         // Find an existing device with a service that has the same IP as the new service
         // If it exists, check to see if that device already has the new service
         // If it does, augment missing data in the existing service with the new service
@@ -75,6 +75,26 @@ class AppCubits extends Cubit<CubitStates> {
   goHomeAndStartDeviceScan() async {
     await startDeviceScan();
     // emit(HomeState(services));
+  }
+
+  updateDevice(DataModel device) {
+    print("Being asked to update the device");
+    // Find the device in the devices list that has the same uuid as the provided device and replace it with the provided device.
+    final index = devices.indexWhere((d) => d.uuid == device.uuid);
+    if (index != -1) {
+      devices[index] = device;
+    }
+    emit(DeviceState(devices[index]));
+  }
+
+  updateService(ServiceModel service) {
+    // Find the device in the devices list that has the same uuid as the provided device and replace it with the provided device.
+    final device = devices.firstWhere((device) => device.services.any((s) => s.uuid == service.uuid));
+    final index = device.services.indexWhere((s) => s.uuid == service.uuid);
+    if (index != -1) {
+      device.services[index] = service;
+    }
+    emit(ServiceState(device.services[index]));
   }
 
   pause() async {

@@ -53,7 +53,7 @@ class _InventoryPageState extends State<InventoryPage> {
                             return ListTile(
                               leading: device.services
                                       .any((service) => !service.isKnown)
-                                  ? Icon(Icons.sentiment_neutral,
+                                  ? Icon(Icons.sentiment_satisfied,
                                       color: theme.colorScheme.error)
                                   : Icon(Icons.sentiment_very_satisfied),
                               title: Text(

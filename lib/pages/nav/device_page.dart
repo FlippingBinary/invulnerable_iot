@@ -49,21 +49,21 @@ class _DevicePageState extends State<DevicePage> {
                         labelText: 'Name',
                       ),
                     ),
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: device.isAdopted,
-                              onChanged: (value) {
-                                final updatedDevice =
-                                    device.copyWith(isAdopted: value);
-                                context
-                                    .read<AppCubits>()
-                                    .updateDevice(updatedDevice);
-                              },
-                            ),
-                            AppText(text: "I know this device"),
-                          ],
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: device.isAdopted,
+                          onChanged: (value) {
+                            final updatedDevice =
+                                device.copyWith(isAdopted: value);
+                            context
+                                .read<AppCubits>()
+                                .updateDevice(updatedDevice);
+                          },
                         ),
+                        AppText(text: "I know this device"),
+                      ],
+                    ),
                     device.services.isEmpty
                         ? Center(child: CircularProgressIndicator())
                         : ListView.builder(
@@ -73,19 +73,14 @@ class _DevicePageState extends State<DevicePage> {
                             itemBuilder: (_, i) {
                               final service = device.services[i];
                               return ListTile(
-                                leading: Icon(
-                                  service.isKnown
-                                      ? Icons.cloud
-                                      : Icons.new_releases,
-                                  color: !service.isKnown
-                                      ? theme.colorScheme.error
-                                      : null,
-                                ),
+                                leading: service.isKnown
+                                    ? Icon(Icons.settings)
+                                    : Icon(
+                                        Icons.settings_suggest,
+                                        color: theme.colorScheme.error,
+                                      ),
                                 title: AppText(
                                   text: service.name,
-                                  color: !service.isKnown
-                                      ? theme.colorScheme.error
-                                      : null,
                                 ),
                                 onTap: () {
                                   // We can't emit from here, but we can call the Cubit's method
@@ -96,9 +91,9 @@ class _DevicePageState extends State<DevicePage> {
                               );
                             },
                           ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
                           ElevatedButton(
                             child: AppText(text: 'Close'),
                             onPressed: () {

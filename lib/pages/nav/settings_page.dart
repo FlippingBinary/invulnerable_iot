@@ -6,7 +6,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("Settings Page"),
+      child: Text("No settings necessary, isn't that nice?"),
     );
   }
 }

@@ -49,17 +49,18 @@ class _InventoryPageState extends State<InventoryPage> {
                           itemCount: devices.length,
                           itemBuilder: (_, i) {
                             ThemeData theme = Theme.of(context);
+                            final device = devices[i];
                             return ListTile(
-                              leading: Icon(Icons.star),
+                              leading: device.services
+                                      .any((service) => !service.isKnown)
+                                  ? Icon(Icons.sentiment_neutral,
+                                      color: theme.colorScheme.error)
+                                  : Icon(Icons.sentiment_very_satisfied),
                               title: Text(
                                 devices[i].name,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: devices[i].services.any(
-                                          (service) => service.isKnown == false)
-                                      ? Colors.red
-                                      : theme.colorScheme.primary,
                                 ),
                               ),
                               onTap: () {

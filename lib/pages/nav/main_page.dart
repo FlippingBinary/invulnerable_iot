@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invulnerable_iot/cubit/app_cubit_states.dart';
 import 'package:invulnerable_iot/cubit/app_cubits.dart';
-import 'package:invulnerable_iot/pages/nav/alerts_page.dart';
+import 'package:invulnerable_iot/pages/nav/strange_page.dart';
 import 'package:invulnerable_iot/pages/nav/inventory_page.dart';
 import 'package:invulnerable_iot/pages/nav/home_page.dart';
 import 'package:invulnerable_iot/pages/nav/learning_page.dart';
@@ -17,13 +17,23 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
-  List pages = [
-    HomePage(),
-    AlertPage(),
-    InventoryPage(),
-    LearningPage(),
-    SettingsPage(),
-  ];
+  List _pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _pages.addAll([
+      HomePage(onButtonPressed: () {
+        setState(() {
+          currentIndex = 1;
+        });
+      }),
+      AlertPage(),
+      InventoryPage(),
+      LearningPage(),
+      SettingsPage(),
+    ]);
+  }
 
   void onTap(int index) {
     setState(() {
@@ -35,7 +45,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Scaffold(
-      body: pages[currentIndex],
+      body: _pages[currentIndex],
       bottomNavigationBar: BlocBuilder<AppCubits, CubitStates>(
         builder: (context, state) {
           final strangeDevices = (state as PrimaryState)

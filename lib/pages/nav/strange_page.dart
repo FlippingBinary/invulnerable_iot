@@ -19,10 +19,8 @@ class _AlertPageState extends State<AlertPage> {
       body: BlocBuilder<AppCubits, CubitStates>(
         builder: (context, state) {
           final primaryState = (state as PrimaryState);
-          var devices = primaryState.devices
-              .where((device) =>
-                  device.isAdopted == false ||
-                  device.services.any((service) => service.isKnown == false))
+          var strangeDevices = primaryState.devices
+              .where((device) => device.isAdopted == false)
               .toList();
           return Column(
             children: [
@@ -32,13 +30,14 @@ class _AlertPageState extends State<AlertPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 40),
-                    AppLargeText(text: "Advice and Alerts"),
+                    AppLargeText(text: "Strange Devices"),
                     AppText(
-                      text: "These devices were found on your network. "
-                          "Please review the list. It's important to identify "
-                          "all devices on your network to keep it secure. "
-                          "When you identify a device, it will be moved to "
-                          "your inventory.",
+                      text: "If strange devices are found on your network, "
+                          "there is no reason to panic. Just review the "
+                          "results and check back as they are updated. It's "
+                          "important to identify all devices on your network "
+                          "to keep it secure. After you identify a device, it "
+                          "will be moved to your inventory.",
                     ),
                     SizedBox(height: 20),
                   ],
@@ -48,14 +47,28 @@ class _AlertPageState extends State<AlertPage> {
                 child: Container(
                   margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
                   child: state.devices.isEmpty
-                      ? Center(child: CircularProgressIndicator())
+                      ? Center(
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return Icon(
+                                Icons.gpp_good,
+                          // set size to the greater of 250 or half the width of the screen
+                                size: constraints.maxWidth > 500
+                                    ? 500
+                                    : constraints.maxWidth * 0.5,
+                              );
+                            },
+                          ),
+                        )
                       : ListView.builder(
-                          itemCount: devices.length,
+                          itemCount: strangeDevices.length,
                           itemBuilder: (_, i) {
+                            final theme = Theme.of(context);
                             return ListTile(
-                              leading: Icon(Icons.star),
+                              leading: Icon(Icons.gpp_bad,
+                                  color: theme.colorScheme.error),
                               title: AppText(
-                                text: devices[i].name,
+                                text: strangeDevices[i].name,
                                 size: 20,
                                 weight: FontWeight.bold,
                               ),
@@ -63,7 +76,7 @@ class _AlertPageState extends State<AlertPage> {
                                 // We can't emit from here, but we can call the Cubit's method
                                 context
                                     .read<AppCubits>()
-                                    .devicePage(device: devices[i]);
+                                    .devicePage(device: strangeDevices[i]);
                               },
                             );
                           },

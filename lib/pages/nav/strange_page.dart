@@ -5,14 +5,14 @@ import 'package:invulnerable_iot/cubit/app_cubits.dart';
 import 'package:invulnerable_iot/widgets/app_large_text.dart';
 import 'package:invulnerable_iot/widgets/app_text.dart';
 
-class AlertPage extends StatefulWidget {
-  const AlertPage({super.key});
+class StrangePage extends StatefulWidget {
+  const StrangePage({super.key});
 
   @override
-  State<AlertPage> createState() => _AlertPageState();
+  State<StrangePage> createState() => _StrangePageState();
 }
 
-class _AlertPageState extends State<AlertPage> {
+class _StrangePageState extends State<StrangePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

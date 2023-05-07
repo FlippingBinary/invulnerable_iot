@@ -28,8 +28,8 @@ class _MainPageState extends State<MainPage> {
           currentIndex = 1;
         });
       }),
-      AlertPage(),
       InventoryPage(),
+      StrangePage(),
       LearningPage(),
       SettingsPage(),
     ]);

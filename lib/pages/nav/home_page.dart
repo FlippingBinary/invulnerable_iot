@@ -4,10 +4,11 @@ import 'package:invulnerable_iot/cubit/app_cubit_states.dart';
 import 'package:invulnerable_iot/cubit/app_cubits.dart';
 import 'package:invulnerable_iot/widgets/app_large_text.dart';
 import 'package:invulnerable_iot/widgets/app_text.dart';
+import 'package:invulnerable_iot/pages/nav/main_page.dart';
 
 class HomePage extends StatefulWidget {
-  final VoidCallback onButtonPressed;
-  const HomePage({super.key, required this.onButtonPressed});
+  final IntCallback gotoTab;
+  const HomePage({super.key, required this.gotoTab});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -84,7 +85,15 @@ class _HomePageState extends State<HomePage>
               ),
               Expanded(
                 child: InkWell(
-                  onTap: widget.onButtonPressed,
+                  onTap: () {
+                    if (strangeDevices.isNotEmpty) {
+                      widget.gotoTab(1);
+                    } else if (deviceUpdates.isNotEmpty) {
+                      widget.gotoTab(2);
+                    } else {
+                      widget.gotoTab(3);
+                    }
+                  },
                   child: Center(
                     child: LayoutBuilder(
                       builder: (context, constraints) {
@@ -112,7 +121,7 @@ class _HomePageState extends State<HomePage>
                           return Icon(
                             Icons.sentiment_very_satisfied,
                             size: constraints.maxWidth * 0.5,
-                                color: theme.colorScheme.primary,
+                            color: theme.colorScheme.primary,
                           );
                         }
                         return Icon(

@@ -8,6 +8,8 @@ import 'package:invulnerable_iot/pages/nav/home_page.dart';
 import 'package:invulnerable_iot/pages/nav/learning_page.dart';
 import 'package:invulnerable_iot/pages/nav/settings_page.dart';
 
+typedef IntCallback = void Function(int index);
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -22,14 +24,17 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    // define a single gotoTab that can be shared by each page
+    gotoTab(int index) {
+      setState(() {
+        currentIndex = index;
+      });
+    }
+
     _pages.addAll([
-      HomePage(onButtonPressed: () {
-        setState(() {
-          currentIndex = 1;
-        });
-      }),
-      InventoryPage(),
-      StrangePage(),
+      HomePage(gotoTab: gotoTab),
+      StrangePage(gotoTab: gotoTab),
+      InventoryPage(gotoTab: gotoTab),
       LearningPage(),
       SettingsPage(),
     ]);

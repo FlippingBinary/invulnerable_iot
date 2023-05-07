@@ -4,9 +4,12 @@ import 'package:invulnerable_iot/cubit/app_cubit_states.dart';
 import 'package:invulnerable_iot/cubit/app_cubits.dart';
 import 'package:invulnerable_iot/widgets/app_large_text.dart';
 import 'package:invulnerable_iot/widgets/app_text.dart';
+import 'package:invulnerable_iot/pages/nav/main_page.dart';
 
 class InventoryPage extends StatefulWidget {
-  const InventoryPage({super.key});
+  final IntCallback gotoTab;
+
+  const InventoryPage({super.key, required this.gotoTab});
 
   @override
   State<InventoryPage> createState() => _InventoryPageState();
@@ -36,15 +39,44 @@ class _InventoryPageState extends State<InventoryPage> {
                           "network. If they are red, it has a new service "
                           "you should check on.",
                     ),
-                    SizedBox(height: 20),
                   ],
                 ),
               ),
               Flexible(
                 child: Container(
-                  margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
+                  margin: const EdgeInsets.only(left: 20, right: 20),
                   child: state.devices.isEmpty
-                      ? Center(child: CircularProgressIndicator())
+                      ? LayoutBuilder(builder: (builder, constraints) {
+                          return InkWell(
+                            onTap: () {
+                              widget.gotoTab(1);
+                            },
+                            child: Center(
+                              child: SizedBox(
+                                width: constraints.maxWidth * 0.8,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.wifi_find,
+                                      size: constraints.maxWidth * 0.5,
+                                    ),
+                                    AppText(
+                                      text: "No devices found",
+                                      size: 20,
+                                      weight: FontWeight.bold,
+                                    ),
+                                    SizedBox(height: 20),
+                                    AppText(
+                                      text: "Look in the Strange devices tab"
+                                          " to find new devices.",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        })
                       : ListView.builder(
                           itemCount: devices.length,
                           itemBuilder: (_, i) {

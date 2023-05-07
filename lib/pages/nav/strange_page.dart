@@ -4,9 +4,12 @@ import 'package:invulnerable_iot/cubit/app_cubit_states.dart';
 import 'package:invulnerable_iot/cubit/app_cubits.dart';
 import 'package:invulnerable_iot/widgets/app_large_text.dart';
 import 'package:invulnerable_iot/widgets/app_text.dart';
+import 'package:invulnerable_iot/pages/nav/main_page.dart';
 
 class StrangePage extends StatefulWidget {
-  const StrangePage({super.key});
+  final IntCallback gotoTab;
+
+  const StrangePage({super.key, required this.gotoTab});
 
   @override
   State<StrangePage> createState() => _StrangePageState();
@@ -39,27 +42,44 @@ class _StrangePageState extends State<StrangePage> {
                           "to keep it secure. After you identify a device, it "
                           "will be moved to your inventory.",
                     ),
-                    SizedBox(height: 20),
                   ],
                 ),
               ),
               Flexible(
                 child: Container(
-                  margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
+                  margin: const EdgeInsets.only(left: 20, right: 20),
                   child: state.devices.isEmpty
-                      ? Center(
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              return Icon(
-                                Icons.gpp_good,
-                          // set size to the greater of 250 or half the width of the screen
-                                size: constraints.maxWidth > 500
-                                    ? 500
-                                    : constraints.maxWidth * 0.5,
-                              );
+                      ? LayoutBuilder(builder: (builder, constraints) {
+                          return InkWell(
+                            onTap: () {
+                              widget.gotoTab(2);
                             },
-                          ),
-                        )
+                            child: Center(
+                              child: SizedBox(
+                                width: constraints.maxWidth * 0.8,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.gpp_good,
+                                      size: constraints.maxWidth * 0.5,
+                                    ),
+                                    AppText(
+                                      text: "No strange devices found",
+                                      size: 20,
+                                      weight: FontWeight.bold,
+                                    ),
+                                    SizedBox(height: 20),
+                                    AppText(
+                                      text: "Look in the inventory tab"
+                                          " to find your known devices.",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        })
                       : ListView.builder(
                           itemCount: strangeDevices.length,
                           itemBuilder: (_, i) {

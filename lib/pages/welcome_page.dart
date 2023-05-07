@@ -28,7 +28,7 @@ class _WelcomePageState extends State<WelcomePage> {
     "family.png",
   ];
   List titles = [
-    "Friendly Spy Detector",
+    "Invulnerable IOT",
     "Scan Your Network",
     "Improve Your Security",
   ];

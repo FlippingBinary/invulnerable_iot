@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   network_info_plus
   nsd_windows
+  url_launcher_windows
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

@@ -40,12 +40,14 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   nsd: ^2.3.1
-  http: ^0.13.5
+  http: ^0.13.6
   flutter_speed_dial: ^6.2.0
   material_color_utilities: ^0.2.0
   ping_discover_network: ^0.2.0+1
   network_info_plus: ^3.0.5
   uuid: ^3.0.7
+  url_launcher: ^6.1.10
+  xml: ^5.4.1
 
 dev_dependencies:
   flutter_test:

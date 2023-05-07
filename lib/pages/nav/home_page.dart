@@ -46,9 +46,14 @@ class _HomePageState extends State<HomePage>
             (previous as PrimaryState).devices.length !=
             (current as PrimaryState).devices.length,
         builder: (context, state) {
-          final devices = (state as PrimaryState)
+          ThemeData theme = Theme.of(context);
+          final adoptedDevices = (state as PrimaryState)
               .devices
-              .where((device) => device.isAdopted == false)
+              .where((device) => device.isAdopted)
+              .toList();
+          final unAdoptedDevices = (state as PrimaryState)
+              .devices
+              .where((device) => !device.isAdopted)
               .toList();
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,21 +72,205 @@ class _HomePageState extends State<HomePage>
                         "updates to keep your network more secure."),
               ),
               Expanded(
-                child: state.devices.isEmpty
-                    ? Center(child: CircularProgressIndicator())
-                    : ListView.builder(
-                        itemCount: devices.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ListTile(
-                            title: Text(devices[index].name),
-                            onTap: () {
-                              BlocProvider.of<AppCubits>(context)
-                                  .devicePage(device: devices[index]);
-                            },
-                          );
-                        },
+                child: GridView.count(
+                  crossAxisCount:
+                      MediaQuery.of(context).size.width < 600 ? 2 : 4,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        print("Tapped Unadopted Devices");
+                      },
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Stack(
+                              children: [
+                                Icon(
+                                      Icons.settings_remote,
+                                  size: 75,
+                                  color: unAdoptedDevices.isNotEmpty
+                                      ? theme.colorScheme.error
+                                      : null,
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.all(1),
+                                    decoration: BoxDecoration(
+                                      color: unAdoptedDevices.isNotEmpty
+                                          ? theme.colorScheme.error
+                                          : theme.colorScheme.secondary,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    constraints: BoxConstraints(
+                                      minWidth: 12,
+                                      minHeight: 12,
+                                    ),
+                                    child: Text(
+                                      '${unAdoptedDevices.length}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: theme.colorScheme.onSecondary,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Text('Strange Devices'),
+                          ],
+                        ),
                       ),
-              ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        print("Tapped Known Devices");
+                      },
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Stack(
+                              children: [
+                                Icon(
+                                      Icons.sentiment_satisfied,
+                                  size: 75,
+                                  color: unAdoptedDevices.isNotEmpty
+                                      ? theme.colorScheme.error
+                                      : null,
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.all(1),
+                                    decoration: BoxDecoration(
+                                      color: unAdoptedDevices.isNotEmpty
+                                          ? theme.colorScheme.error
+                                          : theme.colorScheme.secondary,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    constraints: BoxConstraints(
+                                      minWidth: 12,
+                                      minHeight: 12,
+                                    ),
+                                    child: Text(
+                                      '${unAdoptedDevices.length}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: theme.colorScheme.onSecondary,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Text('Known Devices'),
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        print("Tapped Unadopted Devices");
+                      },
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Stack(
+                              children: [
+                                Icon(
+                                  unAdoptedDevices.isEmpty
+                                      ? Icons.system_security_update_good
+                                      : Icons.system_security_update,
+                                  size: 75,
+                                  color: unAdoptedDevices.isNotEmpty
+                                      ? theme.colorScheme.error
+                                      : null,
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.all(1),
+                                    decoration: BoxDecoration(
+                                      color: unAdoptedDevices.isNotEmpty
+                                          ? theme.colorScheme.error
+                                          : theme.colorScheme.secondary,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    constraints: BoxConstraints(
+                                      minWidth: 12,
+                                      minHeight: 12,
+                                    ),
+                                    child: Text(
+                                      '${unAdoptedDevices.length}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: theme.colorScheme.onSecondary,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Text('Unadopted'),
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        print("Tapped Unadopted Devices");
+                      },
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Stack(
+                              children: [
+                                Icon(
+                                  unAdoptedDevices.isEmpty
+                                      ? Icons.system_security_update_good
+                                      : Icons.system_security_update,
+                                  size: 75,
+                                  color: unAdoptedDevices.isNotEmpty
+                                      ? theme.colorScheme.error
+                                      : null,
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.all(1),
+                                    decoration: BoxDecoration(
+                                      color: unAdoptedDevices.isNotEmpty
+                                          ? theme.colorScheme.error
+                                          : theme.colorScheme.secondary,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    constraints: BoxConstraints(
+                                      minWidth: 12,
+                                      minHeight: 12,
+                                    ),
+                                    child: Text(
+                                      '${unAdoptedDevices.length}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: theme.colorScheme.onSecondary,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Text('Unadopted'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           );
         },

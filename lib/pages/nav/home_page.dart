@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invulnerable_iot/cubit/app_cubit_states.dart';
@@ -103,34 +104,27 @@ class _HomePageState extends State<HomePage>
                             deviceUpdates.isNotEmpty) {
                           return Icon(
                             Icons.sentiment_very_dissatisfied,
-                            size: constraints.maxWidth * 0.5,
+                            size: min(constraints.maxHeight,constraints.maxWidth) * 0.5,
                             color: theme.colorScheme.error,
                           );
                         } else if (strangeDevices.isNotEmpty) {
                           return Icon(
                             Icons.sentiment_dissatisfied,
-                            size: constraints.maxWidth * 0.5,
+                            size: min(constraints.maxHeight,constraints.maxWidth) * 0.5,
                             color: theme.colorScheme.error,
                           );
                         } else if (deviceUpdates.isNotEmpty) {
                           return Icon(
                             Icons.sentiment_satisfied,
-                            size: constraints.maxWidth * 0.5,
+                            size: min(constraints.maxHeight,constraints.maxWidth) * 0.5,
                           );
                         } else {
                           return Icon(
                             Icons.sentiment_very_satisfied,
-                            size: constraints.maxWidth * 0.5,
+                            size: min(constraints.maxHeight,constraints.maxWidth) * 0.5,
                             color: theme.colorScheme.primary,
                           );
                         }
-                        return Icon(
-                          Icons.sentiment_satisfied,
-                          size: constraints.maxWidth * 0.5,
-                          color: unAdoptedDevices.isNotEmpty
-                              ? theme.colorScheme.error
-                              : null,
-                        );
                       },
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invulnerable_iot/cubit/app_cubit_states.dart';
@@ -24,13 +25,15 @@ class _LearningPageState extends State<LearningPage> {
     getRssFeedData().then((document) {
       if (document != null) {
         setState(() {
-          final feed = document.findElements('feed').first;
-          final entries = feed.findElements('entry');
+          final feed = document.findElements('rss').first;
+          final channel = feed.findElements('channel').first;
+          final entries = channel.findElements('item');
           for (final entry in entries) {
             final title = entry.findElements('title').first.text;
-            final link = entry.findElements('link').first.getAttribute('href');
-            final updated = entry.findElements('updated').first.text;
-            final pubDate = DateTime.parse(updated);
+            final link = entry.findElements('link').first.text;
+            final updated = entry.findElements('pubDate').first.text;
+            DateFormat dateFormat = DateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
+            final pubDate = dateFormat.parse(updated);
             _feedItems.add(ArticleData(
               title: title,
               link: link,

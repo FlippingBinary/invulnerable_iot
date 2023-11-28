@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invulnerable_iot/cubit/app_cubit_states.dart';
@@ -62,7 +63,9 @@ class _StrangePageState extends State<StrangePage> {
                                   children: [
                                     Icon(
                                       Icons.gpp_good,
-                                      size: constraints.maxWidth * 0.5,
+                                      size: min(constraints.maxHeight,
+                                              constraints.maxWidth) *
+                                          0.5,
                                     ),
                                     AppText(
                                       text: "No strange devices found",
